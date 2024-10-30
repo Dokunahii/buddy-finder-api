@@ -12,10 +12,10 @@ app.use(express.json())
 const DATABASE_URL = "postgresql://neondb_owner:pofGWib6IF5r@ep-cool-snow-a1gjgyrc-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
 
 const pool = new Pool({
-    connectionString: DATABASE_URL,
-    ssl: {
-      require: true,
-    }
+  connectionString: DATABASE_URL,
+  ssl: {
+    require: true,
+  }
 })
 
 async function getPostgresVersion() {

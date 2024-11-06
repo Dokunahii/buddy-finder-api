@@ -124,6 +124,25 @@ app.get("/address/:id", async(req,res) => {
   }
 })
 
+app.post("/join/:uid", async(req,res) => {
+  const client = await pool.connect()
+  try {
+
+    const userCheck = await client.query("SELECT id FROM userinfo WHERE firebaseuid = $1",[req.params.uid])
+    const user_id = userCheck.rows[0].id
+
+    const query = "INSERT INTO userinfomeetings (user_id, meeting_id) VALUES ($1, $2)"
+    const params = [user_id, req.body.id]
+    const result = await client.query(query,params)
+    
+  } catch (err) {
+    console.error(err.stack)
+    res.status(500).json({ error: err.message })
+  } finally {
+    client.release()
+  }
+})
+
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
 app.listen(3002, () => console.log("Server ready on port."));

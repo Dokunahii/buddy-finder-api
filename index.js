@@ -131,10 +131,11 @@ app.post("/join/:uid", async(req,res) => {
     const userCheck = await client.query("SELECT id FROM userinfo WHERE firebaseuid = $1",[req.params.uid])
     const user_id = userCheck.rows[0].id
 
-    const query = "INSERT INTO userinfomeetings (user_id, meeting_id) VALUES ($1, $2)"
+    const query = "INSERT INTO userinfomeetings (user_id ,meeting_id) VALUES ($1, $2) RETURNING *"
     const params = [user_id, req.body.id]
     const result = await client.query(query,params)
-    
+    res.status(200).json(result.rows[0])
+
   } catch (err) {
     console.error(err.stack)
     res.status(500).json({ error: err.message })
